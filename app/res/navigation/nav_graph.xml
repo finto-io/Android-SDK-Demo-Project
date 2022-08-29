@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <fragment
+        android:id="@+id/selfie"
+        android:name="com.bae.example.BlankFragment"
+        android:label="Please take a selfie">
+        <action
+            android:id="@+id/action_scan_back_to_documentInspectionFragment"
+            app:destination="@id/documentInspectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.bae.example.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_filePicker"
+            app:destination="@id/filePicker" />
+        <action
+            android:id="@+id/action_FirstFragment_to_uploaderFragment"
+            app:destination="@id/uploaderFragment" />
+        <action
+            android:id="@+id/videoFragment"
+            app:destination="@id/blankFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_onboarding_fragment"
+            app:destination="@id/onboarding_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="com.bae.example.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_second">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/filePicker"
+        android:name="kyc.FilePicker"
+        android:label="FilePicker" />
+    <fragment
+        android:id="@+id/uploaderFragment"
+        android:name="com.bae.example.UploaderFragment"
+        android:label="Uploader Result"
+        tools:layout="@layout/fragment_uploader" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.bae.example.BlankFragment"
+        android:label="Please hold the button for 5 seconds"
+        tools:layout="@layout/fragment_blank">
+        <action
+            android:id="@+id/action_blankFragment_to_uploaderFragment"
+            app:destination="@id/uploaderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onboarding_fragment"
+        android:name="com.bae.example.BlankFragment"
+        android:label="Scan front of your id">
+        <action
+            android:id="@+id/action_onboarding_fragment_to_placeholder"
+            app:destination="@id/scan_back" />
+    </fragment>
+    <fragment
+        android:id="@+id/scan_back"
+        android:name="com.bae.example.BlankFragment"
+        android:label="Scan back of your id" >
+        <action
+            android:id="@+id/action_scan_back_to_scan_back2"
+            app:destination="@id/selfie" />
+    </fragment>
+    <fragment
+        android:id="@+id/documentInspectionFragment"
+        android:name="com.bae.example.DocumentInspectionFragment"
+        android:label="Result"
+        tools:layout="@layout/fragment_document_inspection" />
+
+
+</navigation>

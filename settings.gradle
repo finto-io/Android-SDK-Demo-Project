@@ -1,0 +1,26 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven   {
+            url 'https://maven.innovatrics.com/releases'
+        }
+        maven {
+            url = uri("https://maven.pkg.github.com/BankalEtihad/sdk-kyc-Android")
+            credentials {
+                username ""
+                password "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"
+            }
+        }
+    }
+}
+rootProject.name = "kyc-sdk-demo-android"
+include ':app'
