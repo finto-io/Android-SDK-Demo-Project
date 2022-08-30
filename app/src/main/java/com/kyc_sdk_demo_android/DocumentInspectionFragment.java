@@ -20,9 +20,8 @@ public class DocumentInspectionFragment extends Fragment {
 
     private String result;
 
-    public DocumentInspectionFragment() { }
-
-
+    public DocumentInspectionFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,19 @@ public class DocumentInspectionFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Results");
         TextView tv = view.findViewById(R.id.inspection_result);
         tv.setText(result);
-
         Button button = view.findViewById(R.id.scan_again);
-        NavHostFragment navHostFragment = (NavHostFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getActivity()
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_content_main);
         NavController navController = navHostFragment.getNavController();
-        button.setOnClickListener(e-> navController.popBackStack(R.id.onboarding_fragment, false));
+        button.setOnClickListener(e -> navController.popBackStack(R.id.onboarding_fragment, false));
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_document_inspection, container, false);
     }
 }

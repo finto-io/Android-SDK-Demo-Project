@@ -2,6 +2,9 @@ package com.kyc_sdk_demo_android;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,20 +15,20 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import kyc.ob.DocumentScanBackFragment;
 
-public class BackFragment extends Fragment implements DocumentScanBackFragment.DocumentScanListener {
+public class DocumentBackFragment extends Fragment
+        implements DocumentScanBackFragment.DocumentScanListener {
 
-
-    public BackFragment() {}
+    public DocumentBackFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         return inflater.inflate(R.layout.fragment_back, container, false);
     }
 
@@ -44,13 +47,14 @@ public class BackFragment extends Fragment implements DocumentScanBackFragment.D
 
     @Override
     public void onDocumentScanBackSuccess(Bitmap bitmap) {
-        NavHostFragment navHostFragment = (NavHostFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getActivity()
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_content_main);
         NavController navController = navHostFragment.getNavController();
         navController.navigate(R.id.selfie);
     }
 
     @Override
     public void onNoCameraPermission() {
-
     }
 }

@@ -19,14 +19,13 @@ import androidx.fragment.app.Fragment;
 
 
 public class UploaderFragment extends Fragment {
-
-
     private static final String ARG_PARAM1 = "url";
     private TextView textView = null;
     private Button button = null;
     private String url;
 
-    public UploaderFragment() { }
+    public UploaderFragment() {
+    }
 
 
     public static UploaderFragment newInstance(String url) {
@@ -59,27 +58,23 @@ public class UploaderFragment extends Fragment {
         textView.setText(url);
         button = view.findViewById(R.id.open_link);
         button.setVisibility(View.GONE);
-        button.setOnClickListener(e->{
+        button.setOnClickListener(e -> {
             CustomTabsIntent.Builder customIntent = new CustomTabsIntent.Builder();
             customIntent.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.purple_200));
             openCustomTab(getActivity(), customIntent.build(), Uri.parse(textView.getText().toString()));
         });
-
     }
+
     public static void openCustomTab(Activity activity, CustomTabsIntent customTabsIntent, Uri uri) {
         String packageName = "com.android.chrome";
         if (packageName != null) {
-
             customTabsIntent.intent.setPackage(packageName);
             customTabsIntent.launchUrl(activity, uri);
-        } else {
-
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
+        } else activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
 
-    public void setUrl(String url){
+    public void setUrl(String url) {
         textView.setText(url);
         button.setVisibility(View.VISIBLE);
     }

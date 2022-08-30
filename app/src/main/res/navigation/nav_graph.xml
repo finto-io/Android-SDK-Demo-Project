@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding_fragment"
-        android:name="com.kyc_sdk_demo_android.FrontFragment"
+        android:name="com.kyc_sdk_demo_android.DocumentFrontFragment"
         android:label="Scan front of your ID"
         tools:layout="@layout/fragment_front">
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/scan_back"
-        android:name="com.kyc_sdk_demo_android.BackFragment"
+        android:name="com.kyc_sdk_demo_android.DocumentBackFragment"
         android:label="Scan back of your ID"
         tools:layout="@layout/fragment_back">
         <action
