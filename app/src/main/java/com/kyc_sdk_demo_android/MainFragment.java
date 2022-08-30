@@ -25,7 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.kyc_sdk_demo_android.databinding.FragmentFirstBinding;
+import com.kyc_sdk_demo_android.databinding.FragmentMainBinding;
 import com.google.gson.GsonBuilder;
 
 import kyc.FilePicker;
@@ -38,10 +38,9 @@ import kyc.ob.SelfieAutoCaptureFragment;
 import kyc.ob.VideoFragment;
 import kyc.ob.responses.DocumentInspectionResponse;
 
-public class FirstFragment extends Fragment implements VideoFragment.VideoRecordListener,
-        DocumentScanFrontFragment.DocumentScanListener, DocumentScanBackFragment.DocumentScanListener, SelfieAutoCaptureFragment.SelfieListener {
+public class MainFragment extends Fragment implements VideoFragment.VideoRecordListener {
 
-    private FragmentFirstBinding binding;
+    private FragmentMainBinding binding;
     private NavController navController;
     private  NavHostFragment navHostFragment;
     @Override
@@ -49,10 +48,10 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("KYC SDK DEMO");
         BaeInitializer di = new BaeInitializer(getContext(), R.raw.iengine);
         di.initialize();
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = FragmentMainBinding.inflate(inflater, container, false);
         navHostFragment = (NavHostFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
         navController = navHostFragment.getNavController();
         return binding.getRoot();
@@ -60,7 +59,7 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
     }
 
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> filePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -79,10 +78,8 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
                         navController.navigate(R.id.uploaderFragment, bundle);
 
 
-
                         uploader.uploadDocuments(uri -> {
-      
-                            // Get a handler that can be used to post to the main thread
+
                             Handler mainHandler = new Handler(Looper.getMainLooper());
 
                             Runnable myRunnable = ()-> {
@@ -106,22 +103,23 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
         fragment.setVideoRecordListener(this);
 
         navController.navigate(R.id.videoFragment);
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
 
-        transaction.replace(R.id.fragment_container_view, (Fragment)fragment);
-        transaction.commit();
+        Runnable myRunnable = ()-> {
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+
+            transaction.add(R.id.fragment_container_view, fragment);
+            transaction.commit();
+        };
+        mainHandler.post(myRunnable);
+
+
     }
     private  ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
+                    startVideo();
                 }
             });
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -132,36 +130,18 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
             Intent intent = new Intent(getContext() , FilePicker.class);
             String[] mimetypes = {"image/gif", "application/pdf"};
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-            someActivityResultLauncher.launch(intent);
+            filePickerLauncher.launch(intent);
         });
 
 
         binding.buttonVideo.setOnClickListener(e->{
-
-
-
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_DENIED) {
                 requestPermissionLauncher.launch(Manifest.permission.CAMERA);
 
-            }else {
-                startVideo();
-            }
-
-
-
+            }else startVideo();
         });
-        binding.onboarding.setOnClickListener(e->{
-            DocumentScanFrontFragment fragment =  DocumentScanFrontFragment.newInstance();
-            fragment.setDocumentScanListener(this);
-
-            navController.navigate(R.id.onboarding_fragment);
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-
-            transaction.replace(R.id.fragment_container_view, (Fragment)fragment);
-            transaction.commit();
-        });
+        binding.onboarding.setOnClickListener(e->navController.navigate(R.id.onboarding_fragment));
     }
 
     @Override
@@ -175,8 +155,6 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
         Handler mainHandler = new Handler(Looper.getMainLooper());
 
         mainHandler.post( ()-> {
-
-
             FragmentManager supportFragmentManager =getActivity().getSupportFragmentManager();
             NavHostFragment navHostFragment = (NavHostFragment) supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main);
             navHostFragment.getChildFragmentManager().getFragments().get(0);
@@ -184,100 +162,20 @@ public class FirstFragment extends Fragment implements VideoFragment.VideoRecord
             uploaderFragment.setUrl(url);
 
         });
-
-
     }
     @Override
     public void onVideoRecordLoadingStarted(){
         Handler mainHandler = new Handler(Looper.getMainLooper());
-
-
         mainHandler.post( ()-> {
-
             navController.popBackStack();
             Bundle bundle = new Bundle();
             bundle.putString("url", "Loading...");
             navController.navigate(R.id.uploaderFragment, bundle);
 
-
-
-
-        });
-
-    }
-
-    @Override
-    public void onVideoRecordFailed() {
-
-    }
-
-    @Override
-    public void onDocumentScanFrontSuccess(Bitmap bitmap) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-
-
-        mainHandler.post( ()-> {
-
-
-            DocumentScanBackFragment fragment =  DocumentScanBackFragment.newInstance();
-            fragment.setDocumentScanListener(this);
-
-            navController.navigate(R.id.scan_back);
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-
-            transaction.replace(R.id.fragment_container_view, (Fragment)fragment);
-            transaction.commit();
-
-
         });
     }
 
     @Override
-    public void onDocumentScanBackSuccess(Bitmap bitmap) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
+    public void onVideoRecordFailed() {}
 
-
-        mainHandler.post( ()-> {
-
-
-            SelfieAutoCaptureFragment fragment =  SelfieAutoCaptureFragment.newInstance();
-            fragment.setLivelinessListener(this);
-
-            navController.navigate(R.id.selfie);
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-
-            transaction.replace(R.id.fragment_container_view, (Fragment)fragment);
-            transaction.commit();
-
-
-        });
-    }
-
-    @Override
-    public void onSelfieCaptured(Bitmap bitmap) {
-        Api api = new Api(getContext(), "https://bl4-dev-02.baelab.net/api/BAF3E974-52AA-7598-FF04-56945EF93500/48EE4790-8AEF-FEA5-FFB6-202374C61700");
-        api.inspectDocument(new Api.InspectDocumentsCallback() {
-            @Override
-            public void onSuccess(DocumentInspectionResponse response) {
-                Bundle bundle = new Bundle();
-                bundle.putString("result",  new GsonBuilder().setPrettyPrinting().create().toJson(response, DocumentInspectionResponse.class));
-
-                navController.navigate(R.id.documentInspectionFragment, bundle);
-
-
-            }
-
-            @Override
-            public void onFail(String code) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onNoCameraPermission() {
-
-    }
 }

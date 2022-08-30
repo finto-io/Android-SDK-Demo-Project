@@ -7,17 +7,18 @@
 
     <fragment
         android:id="@+id/selfie"
-        android:name="com.kyc_sdk_demo_android.BlankFragment"
-        android:label="Please take a selfie">
+        android:name="com.kyc_sdk_demo_android.SelfieFragment"
+        android:label="Please take a selfie"
+        tools:layout="@layout/fragment_selfie">
         <action
             android:id="@+id/action_scan_back_to_documentInspectionFragment"
             app:destination="@id/documentInspectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.kyc_sdk_demo_android.FirstFragment"
+        android:name="com.kyc_sdk_demo_android.MainFragment"
         android:label="KYC SDK DEMO"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_main">
 
         <action
             android:id="@+id/action_FirstFragment_to_filePicker"
@@ -44,8 +45,8 @@
         tools:layout="@layout/fragment_uploader" />
     <fragment
         android:id="@+id/blankFragment"
-        android:name="com.kyc_sdk_demo_android.BlankFragment"
-        android:label="Please hold button for 5 seconds"
+        android:name="com.kyc_sdk_demo_android.VideoFragment"
+        android:label="Hold the button for 5 seconds"
         tools:layout="@layout/fragment_blank">
         <action
             android:id="@+id/action_blankFragment_to_uploaderFragment"
@@ -53,16 +54,18 @@
     </fragment>
     <fragment
         android:id="@+id/onboarding_fragment"
-        android:name="com.kyc_sdk_demo_android.BlankFragment"
-        android:label="Scan front of your id">
+        android:name="com.kyc_sdk_demo_android.FrontFragment"
+        android:label="Scan front of your ID"
+        tools:layout="@layout/fragment_front">
         <action
             android:id="@+id/action_onboarding_fragment_to_placeholder"
             app:destination="@id/scan_back" />
     </fragment>
     <fragment
         android:id="@+id/scan_back"
-        android:name="com.kyc_sdk_demo_android.BlankFragment"
-        android:label="Scan back of your id" >
+        android:name="com.kyc_sdk_demo_android.BackFragment"
+        android:label="Scan back of your ID"
+        tools:layout="@layout/fragment_back">
         <action
             android:id="@+id/action_scan_back_to_scan_back2"
             app:destination="@id/selfie" />

@@ -3,19 +3,13 @@
     package="com.kyc_sdk_demo_android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
     <queries>
-
-        <!-- <intent> -->
-        <!-- <action android:name="android.intent.action.VIEW" /> -->
-        <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
-        <!-- <data android:scheme="https" /> -->
-        <!-- </intent> -->
         <intent>
             <action android:name="android.support.customtabs.action.CustomTabsService" />
         </intent>
@@ -27,11 +21,6 @@
         android:label="KYC SDK DEMO"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-        <activity
-            android:name=".StartActivity"
-            android:exported="false"
-            android:label="@string/title_activity_start"
-            android:theme="@style/Theme.Kycsdkdemoandroid.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
