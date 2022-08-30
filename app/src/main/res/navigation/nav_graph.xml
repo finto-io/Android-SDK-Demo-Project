@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/blankFragment"
         android:name="com.kyc_sdk_demo_android.VideoFragment"
-        android:label="Hold the button for 5 seconds"
+        android:label="Hold the button for 5 sec"
         tools:layout="@layout/fragment_blank">
         <action
             android:id="@+id/action_blankFragment_to_uploaderFragment"

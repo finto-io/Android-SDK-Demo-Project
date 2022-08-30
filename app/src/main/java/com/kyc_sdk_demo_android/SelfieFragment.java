@@ -26,8 +26,11 @@ public class SelfieFragment extends Fragment implements SelfieAutoCaptureFragmen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Please take a selfie");
         SelfieAutoCaptureFragment fragment = SelfieAutoCaptureFragment.newInstance();
         fragment.setLivelinessListener(this);

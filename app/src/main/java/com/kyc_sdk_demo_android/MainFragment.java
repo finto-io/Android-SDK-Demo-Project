@@ -54,6 +54,7 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
                         // There are no request codes
                         Intent data = result.getData();
 
+
                         String baseUrl = "https://bl4-dev-02.baelab.net/api/BAF3E974-52AA-7598-FF04-56945EF93500/48EE4790-8AEF-FEA5-FFB6-202374C61700";
                         Uploader uploader = new Uploader(getContext(), baseUrl);
                         uploader.addDocument(data.getData());
