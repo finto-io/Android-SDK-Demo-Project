@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.innovatrics.dot:dot-face-verification:4.4.0'
 
 
-    implementation 'com.kyc:sdk-kyc:2.1.1'
+    implementation 'com.kyc:sdk-kyc:2.1.2'
     implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
