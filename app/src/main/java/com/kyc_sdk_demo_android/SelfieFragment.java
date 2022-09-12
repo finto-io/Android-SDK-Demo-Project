@@ -2,9 +2,12 @@ package com.kyc_sdk_demo_android;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.gson.GsonBuilder;
 
+import kyc.BaeError;
 import kyc.ob.Api;
 import kyc.ob.SelfieAutoCaptureFragment;
 import kyc.ob.responses.DocumentInspectionResponse;
@@ -57,14 +61,27 @@ public class SelfieFragment extends Fragment implements SelfieAutoCaptureFragmen
                         .create()
                         .toJson(response, DocumentInspectionResponse.class);
                 bundle.putString("result", ScanningResult);
-
-                navController.navigate(R.id.documentInspectionFragment, bundle);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(() -> {
+                    navController.navigate(R.id.documentInspectionFragment, bundle);
+                });
             }
 
             @Override
-            public void onFail(String code) {
-
+            public void onFail(BaeError baeError) {
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(() -> {
+                    Toast.makeText(getContext(), baeError.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
+        });
+    }
+
+    @Override
+    public void onSelfieFailed(BaeError baeError) {
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            Toast.makeText(getContext(), baeError.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
 

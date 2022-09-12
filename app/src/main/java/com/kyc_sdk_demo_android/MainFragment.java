@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -26,8 +27,10 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.kyc_sdk_demo_android.databinding.FragmentMainBinding;
 
+import kyc.BaeError;
 import kyc.FilePicker;
 import kyc.Uploader;
+import kyc.UploaderFile;
 import kyc.ob.Api;
 import kyc.ob.BaeInitializer;
 import kyc.ob.VideoFragment;
@@ -61,23 +64,31 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
                         Bundle bundle = new Bundle();
                         bundle.putString("url", "Loading...");
                         navController.navigate(R.id.uploaderFragment, bundle);
-                        uploader.uploadDocuments(uri -> {
-                            Handler mainHandler = new Handler(Looper.getMainLooper());
+                        uploader.uploadDocuments(new UploaderFile.UploaderCallback() {
+                            @Override
+                            public void onSuccess(UploaderFile uploaderFile) {
+                                Handler mainHandler = new Handler(Looper.getMainLooper());
 
-                            Runnable myRunnable = () -> {
-                                FragmentManager supportFragmentManager = getActivity()
-                                        .getSupportFragmentManager();
-                                NavHostFragment navHostFragment = (NavHostFragment) supportFragmentManager
-                                        .findFragmentById(R.id.nav_host_fragment_content_main);
-                                navHostFragment.getChildFragmentManager().getFragments().get(0);
-                                UploaderFragment uploaderFragment = (UploaderFragment) navHostFragment
-                                        .getChildFragmentManager()
-                                        .getFragments()
-                                        .get(0);
-                                uploaderFragment.setUrl(uri.fileUrl);
-                            };
+                                Runnable myRunnable = () -> {
+                                    FragmentManager supportFragmentManager = getActivity()
+                                            .getSupportFragmentManager();
+                                    NavHostFragment navHostFragment = (NavHostFragment) supportFragmentManager
+                                            .findFragmentById(R.id.nav_host_fragment_content_main);
+                                    navHostFragment.getChildFragmentManager().getFragments().get(0);
+                                    UploaderFragment uploaderFragment = (UploaderFragment) navHostFragment
+                                            .getChildFragmentManager()
+                                            .getFragments()
+                                            .get(0);
+                                    uploaderFragment.setUrl(uploaderFile.fileUrl);
+                                };
 
-                            mainHandler.post(myRunnable);
+                                mainHandler.post(myRunnable);
+                            }
+
+                            @Override
+                            public void onFailed(BaeError baeError) {
+                                Toast.makeText(getContext(), baeError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         });
                     }
                 }
@@ -90,6 +101,7 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
             Bundle savedInstanceState
     ) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("KYC SDK DEMO");
+
         BaeInitializer di = new BaeInitializer(getContext(), R.raw.iengine);
         di.initialize();
         binding = FragmentMainBinding.inflate(inflater, container, false);
@@ -97,6 +109,7 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
                 .getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_content_main);
         navController = navHostFragment.getNavController();
+        navController.popBackStack();
         return binding.getRoot();
     }
 
@@ -158,6 +171,11 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
     }
 
     @Override
+    public void onVideoRecordFailed(BaeError baeError) {
+        Toast.makeText(getContext(), baeError.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onVideoRecordLoadingStarted() {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
@@ -168,7 +186,5 @@ public class MainFragment extends Fragment implements VideoFragment.VideoRecordL
         });
     }
 
-    @Override
-    public void onVideoRecordFailed() {
-    }
+
 }
