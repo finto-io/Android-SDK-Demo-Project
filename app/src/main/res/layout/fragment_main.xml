@@ -4,48 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainFragment">
 
-
-
-
-    <Button
-        android:id="@+id/button_first"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:background="@color/orange"
-        android:text="Upload Documents"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/button_video"
+    <LinearLayout
+        android:divider="@drawable/empty_divider"
+        android:gravity="center"
+        android:showDividers="middle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <Button
+            android:id="@+id/upload_nav_button"
+            style="@style/bae_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Documents"
+            tools:ignore="TextContrastCheck" />
 
-    <Button
-        android:id="@+id/onboarding"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:background="@color/orange"
-        android:text="Scan Documents"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/button_first"
-        app:layout_constraintBottom_toBottomOf="@+id/button_video"
-        />
+        <Button
+            android:id="@+id/scan_nav_button"
+            style="@style/bae_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan documents"
+            tools:ignore="TextContrastCheck" />
 
-    <Button
-        android:id="@+id/button_video"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:background="@color/orange"
-        android:text="Record Video"
-        android:textColor="@color/white"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/onboarding"/>
-
+        <Button
+            android:id="@+id/scan_nav_record"
+            style="@style/bae_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Record video"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
